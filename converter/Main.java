@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         String input = readLine().trim();
         Converter parser = Parser.getParser(input);
-        parser.printElement(parser.parseElement(input));
+        parser.parseElement(input);
     }
 
     static String readLine() {

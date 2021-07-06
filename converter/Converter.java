@@ -4,7 +4,9 @@ import java.util.Map;
 
 public abstract class Converter {
 
-    abstract Map<String, String> parseElement(String element);
+    abstract void parseElement(String element);
 
-    abstract void printElement(Map<String, String> element);
+    abstract void parseSingleElement(String element);
+
+    abstract void printSingleElement(Map<String, String> element);
 }

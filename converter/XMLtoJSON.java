@@ -101,10 +101,14 @@ public class XMLtoJSON extends Converter{
                         keys < map.size() ? "," : "");
                 keys++;
             } else if (key.startsWith("#")) {
-                System.out.printf("%s\"%s\" : \"%s\"\n",
+                String value = map.get(key);
+                String format = value.equals("null") ?
+                        "%s\"%s\" : %s\n" :
+                        "%s\"%s\" : \"%s\"\n";
+                System.out.printf(format,
                         spaces.substring(0, indent),
                         key,
-                        map.get(key).equals("null") ? "null" : map.get(key));
+                        map.get(key));
                 indent -= 4;
             } else {
                 System.out.printf("%s\"%s\" : {\n",

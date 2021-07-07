@@ -1,22 +1,32 @@
 package converter;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class XMLtoJSON extends Converter{
-    void parseElement(String xml) {
-        if (xml.contains("=")) {
-            parseAttributeElement(xml);
+    /**
+     * Takes an XML string to be parsed and determines which method to call
+     * @param element XML to be parsed
+     */
+    @Override
+    void parseElement(String element) {
+        if (element.contains("=")) {
+            parseAttributeElement(element);
         } else {
-            parseSingleElement(xml);
+            parseSingleElement(element);
         }
     }
 
+    /**
+     * Parses an XML element without attributes into a key/value pair to be
+     * passed on to be printed
+     * @param element XML element
+     */
+    @Override
     void parseSingleElement(String element) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new LinkedHashMap<>();
         if (element.endsWith("/>")) {
             map.put(element.substring(1, element.length() - 2), "null");
         } else {
@@ -29,16 +39,27 @@ public class XMLtoJSON extends Converter{
         printSingleElement(map);
     }
 
-    void printSingleElement(Map<String, String> element) {
-        for (String key : element.keySet()) {
-            if (element.get(key).equals("null")) {
+    /**
+     * Print an XML element without attributes in JSON format
+     * @param map map of XML element
+     */
+    @Override
+    void printSingleElement(Map<String, String> map) {
+        for (String key : map.keySet()) {
+            if (map.get(key).equals("null")) {
                 System.out.printf("{\"%s\": null}\n", key);
             } else {
-                System.out.printf("{\"%s\": \"%s\"}\n", key, element.get(key));
+                System.out.printf("{\"%s\": \"%s\"}\n", key, map.get(key));
             }
         }
     }
 
+    /**
+     * Parse an XML element that has attributes into key/value pairs to be
+     * translated into JSON notation
+     * @param element XML to be parsed
+     */
+    @Override
     void parseAttributeElement(String element) {
         Map<String, String> map = new LinkedHashMap<>();
         String property = element.substring(1, element.indexOf(" "));
@@ -59,6 +80,11 @@ public class XMLtoJSON extends Converter{
         printAttributeElement(map);
     }
 
+    /**
+     * Print a map of an XML element with attributes in JSON format
+     * @param map map of XML element
+     */
+    @Override
     void printAttributeElement(Map<String, String> map) {
         String spaces = "            ";
         int indent = 0;

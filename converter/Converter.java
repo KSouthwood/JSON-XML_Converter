@@ -8,5 +8,9 @@ public abstract class Converter {
 
     abstract void parseSingleElement(String element);
 
-    abstract void printSingleElement(Map<String, String> element);
+    abstract void printSingleElement(Map<String, String> map);
+
+    abstract void parseAttributeElement(String element);
+
+    abstract void printAttributeElement(Map<String, String> map);
 }

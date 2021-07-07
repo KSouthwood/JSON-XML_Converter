@@ -11,6 +11,10 @@ public class Main {
 
     static String readLine() {
         final Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        StringBuilder input = new StringBuilder();
+        while (scanner.hasNext()) {
+            input.append(scanner.nextLine());
+        }
+        return input.toString();
     }
 }

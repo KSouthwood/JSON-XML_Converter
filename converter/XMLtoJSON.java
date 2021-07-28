@@ -36,22 +36,7 @@ public class XMLtoJSON extends Converter{
                     element.substring(begin + 1, end));
         }
 
-        printSingleElement(map);
-    }
-
-    /**
-     * Print an XML element without attributes in JSON format
-     * @param map map of XML element
-     */
-    @Override
-    void printSingleElement(Map<String, String> map) {
-        for (String key : map.keySet()) {
-            if (map.get(key).equals("null")) {
-                System.out.printf("{\"%s\": null}\n", key);
-            } else {
-                System.out.printf("{\"%s\": \"%s\"}\n", key, map.get(key));
-            }
-        }
+        new Output(false).printSingleElement(map);
     }
 
     /**
@@ -77,46 +62,7 @@ public class XMLtoJSON extends Converter{
             int end = element.lastIndexOf("<");
             map.put("#" + property, element.substring(begin + 1, end));
         }
-        printAttributeElement(map);
+        new Output(false).printAttributeElement(map);
     }
 
-    /**
-     * Print a map of an XML element with attributes in JSON format
-     * @param map map of XML element
-     */
-    @Override
-    void printAttributeElement(Map<String, String> map) {
-        String spaces = "            ";
-        int indent = 0;
-        int keys = 0;
-
-        System.out.println("{");
-        indent += 4;
-        for (String key : map.keySet()) {
-            if (key.startsWith("@")) {
-                System.out.printf("%s\"%s\" : \"%s\"%s\n",
-                        spaces.substring(0, indent),
-                        key,
-                        map.get(key),
-                        keys < map.size() ? "," : "");
-                keys++;
-            } else if (key.startsWith("#")) {
-                String value = map.get(key);
-                String format = value.equals("null") ?
-                        "%s\"%s\" : %s\n" :
-                        "%s\"%s\" : \"%s\"\n";
-                System.out.printf(format,
-                        spaces.substring(0, indent),
-                        key,
-                        map.get(key));
-                indent -= 4;
-            } else {
-                System.out.printf("%s\"%s\" : {\n",
-                        spaces.substring(0, indent),
-                        key);
-                indent += 4;
-            }
-        }
-        System.out.println(spaces.substring(0, indent) + "}\n}");
-    }
 }

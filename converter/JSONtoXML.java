@@ -35,22 +35,7 @@ public class JSONtoXML extends Converter{
                 .replace("\"", "")
                 .replace("}", "");
         map.put(key, value);
-        printSingleElement(map);
-    }
-
-    /**
-     * Print a JSON element without attributes in XML format
-     * @param map map of JSON element
-     */
-    @Override
-    void printSingleElement(Map<String, String> map) {
-        for (String key : map.keySet()) {
-            if (map.get(key).equals("null")) {
-                System.out.printf("<%s/>\n", key);
-            } else {
-                System.out.printf("<%1$s>%2$s</%1$s>\n", key, map.get(key));
-            }
-        }
+        new Output(true).printSingleElement(map);
     }
 
     /**
@@ -77,32 +62,6 @@ public class JSONtoXML extends Converter{
             map.put(attribs[0].substring(1).trim(), attribs[1].trim());
         }
 
-        printAttributeElement(map);
-    }
-
-    /**
-     * Print a map of a JSON element with attributes in XML format
-     * @param map map of JSON element
-     */
-    @Override
-    void printAttributeElement(Map<String, String> map) {
-        StringBuilder xml = new StringBuilder();
-        String property = "";
-        for (String key : map.keySet()) {
-            if (property.isBlank()) {
-                property = key;
-                xml.append("<").append(property);
-            } else {
-                xml.append(" ").append(key).append(" = \"")
-                        .append(map.get(key)).append('"');
-            }
-        }
-        if (map.get(property).equals("null")) {
-            xml.append(" />");
-        } else {
-            xml.append(">").append(map.get(property))
-                    .append("</").append(property).append(">");
-        }
-        System.out.println(xml);
+        new Output(true).printAttributeElement(map);
     }
 }

@@ -5,18 +5,24 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class JSONtoXML extends Converter{
+public class ParseJSON extends Converter {
+    private final String textToParse;
+
+    ParseJSON(String inputToParse) {
+        this.textToParse = inputToParse;
+    }
+
     /**
      * Takes a JSON string to be parsed and determines which method to call
-     * @param element JSON to be parsed
      */
     @Override
-    void parseElement(String element) {
-        if (element.contains("@") || element.contains("#")) {
-            parseAttributeElement(element);
+    Element parseElement() {
+        if (textToParse.contains("@") || textToParse.contains("#")) {
+            parseAttributeElement(textToParse);
         } else {
-            parseSingleElement(element);
+            parseSingleElement(textToParse);
         }
+        return null;
     }
 
     /**
@@ -24,7 +30,6 @@ public class JSONtoXML extends Converter{
      * passed on to be printed
      * @param element JSON element
      */
-    @Override
     void parseSingleElement(String element) {
         Map<String, String> map = new LinkedHashMap<>();
         String[] splits = element.split(":");
@@ -43,7 +48,6 @@ public class JSONtoXML extends Converter{
      * translated into XML notation
      * @param element JSON to be parsed
      */
-    @Override
     void parseAttributeElement(String element) {
         Matcher property = Pattern.compile("(?<=\")\\w+(?=\"\\s+:\\s+\\{\\s)")
                 .matcher(element);
@@ -56,10 +60,10 @@ public class JSONtoXML extends Converter{
         }
 
         while (attributes.find()) {
-            String[] attribs = attributes.group()
+            String[] attrib = attributes.group()
                     .replace("\"", "")
                     .split(":");
-            map.put(attribs[0].substring(1).trim(), attribs[1].trim());
+            map.put(attrib[0].substring(1).trim(), attrib[1].trim());
         }
 
         new Output(true).printAttributeElement(map);

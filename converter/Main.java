@@ -10,7 +10,7 @@ public class Main {
         boolean file = args.length == 0 || !args[0].equals("console");
         String input = file ? readFromFile() : readLine();
         Converter parser = Parser.getParser(input);
-        parser.parseElement(input);
+        new Output(true).printElement(parser.parseElement());
     }
 
     static String readLine() {
@@ -26,6 +26,7 @@ public class Main {
         StringBuilder input = new StringBuilder();
         String line;
 
+//        try (BufferedReader file = new BufferedReader(new FileReader(".\\JSON - XML converter\\task\\src\\converter\\myTestFile.txt"))) {
         try (BufferedReader file = new BufferedReader(new FileReader("test.txt"))) {
             while ((line = file.readLine()) != null) {
                 input.append(line);

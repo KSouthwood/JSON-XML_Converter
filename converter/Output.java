@@ -103,4 +103,38 @@ public class Output {
         }
         System.out.println(spaces.substring(0, indent) + "}\n}");
     }
+
+    void printElement(Element root) {
+        if (root == null) {
+            return;
+        }
+
+        printElementInXML(root);
+    }
+
+    private void printElementInXML(Element node) {
+        System.out.println("Element:");
+        System.out.println("path = " + String.join(", ", node.getPath()));
+        if (node.hasChildren()) {
+            System.out.println();
+            for (var child : node.getChildren()) {
+                printElementInXML(child);
+            }
+        } else {
+            System.out.print("value = ");
+            if (node.getValue() == null) {
+                System.out.println("null");
+            } else {
+                System.out.println("\"" + node.getValue() + "\"");
+            }
+            if (node.hasAttributes()) {
+                var map = node.getAttributes();
+                System.out.println("attributes:");
+                for (var key : map.keySet()) {
+                    System.out.printf("%s = \"%s\"\n", key, map.get(key));
+                }
+            }
+            System.out.println();
+        }
+    }
 }
